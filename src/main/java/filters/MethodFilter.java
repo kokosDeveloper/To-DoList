@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-@WebFilter(urlPatterns = "/secure/tasks")
+@WebFilter(urlPatterns = "/secure/operations/update")
 public class MethodFilter extends HttpFilter {
     private static final List<String> methods = List.of("DELETE");
 

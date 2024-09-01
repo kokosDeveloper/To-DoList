@@ -1,4 +1,4 @@
-package servlets;
+package servlets.OperationServlets;
 
 import entity.Task;
 import jakarta.servlet.ServletException;
@@ -10,11 +10,10 @@ import jakarta.servlet.http.HttpSession;
 import services.TaskService;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.UUID;
 
-@WebServlet(urlPatterns = "/secure/tasks")
-public class TaskServlet extends HttpServlet {
+@WebServlet(urlPatterns = "/secure/operations/add")
+public class AddTaskServlet extends HttpServlet {
     private TaskService taskService;
 
     @Override
@@ -25,13 +24,7 @@ public class TaskServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession();
-        List<Task> tasks = taskService.getAll();
-        List<Task> userTasks = tasks.stream()
-                .filter(task -> task.getUserId().equals(session.getAttribute("userId")))
-                .toList();
-        req.setAttribute("userTasks", userTasks);
-        req.getRequestDispatcher("/secure/tasks.jsp").forward(req, resp);
+        req.getRequestDispatcher("/secure/operations/addTask.jsp").forward(req, resp);
     }
 
     @Override
@@ -49,13 +42,7 @@ public class TaskServlet extends HttpServlet {
                 .userId((UUID) session.getAttribute("userId"))
                 .build();
         taskService.save(task);
-        resp.sendRedirect("/secure/tasks");
-    }
-
-    @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        UUID id = UUID.fromString(req.getParameter("id"));
-        taskService.delete(id);
+        session.setAttribute("successAdded", "Задача добавлена");
         resp.sendRedirect("/secure/tasks");
     }
 }

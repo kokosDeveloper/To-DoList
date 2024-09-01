@@ -18,4 +18,7 @@ public class TaskService {
     public void delete(UUID id){
         taskDao.delete(id);
     }
+    public void updateStatus(UUID id, boolean status){
+        taskDao.updateStatus(id, status);
+    }
 }
